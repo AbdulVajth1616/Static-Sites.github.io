@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AariAura</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #ffffff;
+      --secondary-color: #4b0082;
+      --bg-color: #4b0082;
+      --text-color: #ffffff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      scroll-behavior: smooth;
+    }
+
+    header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #4b0082;
+  position: relative;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.logo img {
+  width: 150px;  /* Adjust the width as needed */
+  height: 150px;  /* Maintain aspect ratio */
+}
+
+
+.hamburger {
+  font-size: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #fff; /* Set the hamburger icon color to white */
+  display: block;
+  z-index: 1000; /* Ensure the button is above other elements */
+}
+
+nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+nav a {
+  display: flex;
+  align-items: center;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.nav-icon {
+  width: 20px;
+  margin-right: 8px;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #4b0082;
+    width: 100%;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    display: none; /* hide nav by default */
+  }
+
+  nav.show {
+    display: flex;
+  }
+}
+
+    .hero-section {
+      background-image: url('path/to/your/image.jpg');
+      background-size: cover;
+      background-position: center;
+      color: var(--primary-color);
+      padding: 80px 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-content h1 {
+      font-size: 3rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      animation: fadeIn 2s ease-out;
+    }
+
+    .hero-content p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      animation: fadeIn 2s 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    #products {
+      padding: 4rem 20px;
+      text-align: center;
+    }
+
+    #products h2 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      color: var(--primary-color);
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .products-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 20px;
+      padding: 1rem 0;
+    }
+
+    .product-card {
+      min-width: 250px;
+      background: transparent;
+      border: 1px solid #ffffff33;
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+      color: white;
+      box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+      transition: 0.3s;
+      animation: fadeInUp 1s ease-in-out;
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .product-card:hover {
+      transform: translateY(-10px);
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #contact {
+      padding: 2rem 20px;
+      text-align: center;
+    }
+
+    #contact h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+    }
+
+    #contact a {
+      color: var(--primary-color);
+      text-decoration: underline;
+    }
+
+    footer {
+      background-color: var(--secondary-color);
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: var(--primary-color);
+    }
+
+    @media (max-width: 600px) {
+      .logo {
+        font-size: 1.2rem;
+      }
+      nav a {
+        margin: 0 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      
+.carousel-container {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.carousel-track {
+  display: flex;
+  animation: slide 12s infinite linear;
+  gap: 1rem;
+}
+
+.carousel-track img {
+  min-width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+@keyframes slide {
+  0%   { transform: translateX(0%); }
+  33%  { transform: translateX(-100%); }
+  66%  { transform: translateX(-200%); }
+  100% { transform: translateX(0%); }
+}
+
+  /* Offer Banner CSS */
+ /* Offer Banner CSS */
+.offer-banner {
+  background-color: #fff;
+  overflow: hidden;
+  padding: 10px 0;
+  margin: 2rem auto;
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+}
+
+.offer-carousel {
+  display: flex;
+  gap: 20px;
+  overflow: hidden;
+  width: 100%;
+  scroll-behavior: smooth;
+}
+
+.offer-carousel img {
+  height: 100px;
+  width: 200px; /* Adjusted size */
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.offer-banner {
+  background-color: #fff;
+  overflow: hidden;
+  padding: 10px 0;
+  margin: 2rem auto;
+  width: 100%;
+  height: 100px; /* Keeps the height fixed */
+}
+
+.offer-carousel {
+  display: flex;
+  gap: 20px;
+  overflow: hidden;
+  width: 100%;
+  scroll-behavior: smooth;
+}
+
+.offer-carousel img {
+  height: 100px;  /* Fixed height for the banner */
+  width: 200px;  /* Adjusted width for better visibility */
+  object-fit: cover; /* Ensure image fits well within the container */
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .offer-carousel img {
+    width: 150px;  /* Smaller width on mobile for better scaling */
+    height: 80px;  /* Adjust height on smaller screens */
+  }
+}
+
+
+
+
+
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+    </div>
+      
+    <button class="hamburger" id="hamburgerBtn">
+      &#9776;
+    </button>
+  
+    <nav id="navMenu">
+      <a href="#hero">
+        <img src="images/icons8-home-100.png" alt="Home" class="nav-icon"> Home
+      </a>
+      <a href="#products">
+        <img src="images/icons8-shopping-cart-100.png" alt="Products" class="nav-icon"> Products
+      </a>
+      <a href="#contact">
+        <img src="images/icons8-contacts-100.png" alt="Contact" class="nav-icon"> Contact
+      </a>
+    </nav>
+  </header>
+  
+  
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero-section">
+    <div class="hero-content">
+      <h1>Welcome to The World of Aari Aura
+      </h1>
+      <img src="images/Gold Luxury Initial Logo.png" alt="Aari aaura">
+      <p>Experience the elegance of handcrafted Aari work, a rich tradition passed down through generations. Our blouses are meticulously designed to offer a perfect blend of cultural artistry and modern fashion.</p>
+    </div>
+  </section>
+
+
+
+  <!-- Products Section -->
+  <section id="products">
+    <h2>Our Products</h2>
+    <h1>We’re new and excited to work with you  — prices are open for discussion!</h1>
+
+    <div class="products-container">
+      <div class="product-card" data-aos="fade-up">
+        <img src="https://i.pinimg.com/236x/84/70/82/847082bc7e98b35c03e70f68c7055f83.jpg" alt="Product 1">
+        <h3>Aari Blossom Embroidery</h3>
+        <p>A delicate design featuring blooming floral patterns crafted with intricate Aari embroidery.</p>
+      </div>
+      <div class="product-card" data-aos="fade-up">
+        <img src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTeePdjxBy6C5o4OzQMRVcEmi_JFmaYGnlIbg0s2zEWbA-fwTZj-cWv4FrW3i9JnFBAGXn0TrB9T30k7t_0WefnbeAMc6lXpJSqE5ZZRiqBn2l671B1Avkm_Q" alt="Product 2">
+        <h3>Silk Aari Threads</h3>
+        <p>Luxurious silk threads woven into beautiful Aari embroidery, combining elegance and tradition.</p>
+      </div>
+      <div class="product-card" data-aos="fade-up">
+        <img src="https://i.etsystatic.com/25022863/r/il/1b8879/5180670027/il_1588xN.5180670027_odd5.jpg" alt="Product 3">
+        <h3>Maggnum Work blouses</h3>
+        <p>Exquisite golden threadwork showcasing the fine art of Aari embroidery in every stitch.</p>
+      </div>
+      <div class="product-card" data-aos="fade-up">
+        <img src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQnFsDkOInxEZ1zHGasmI3jJcYgq41350ihN9sJEoadvBUguX7-_bpNC4aJFKdKiPk5yChhac1g05RBj6-HW8o5P8gjrhNivxiaI0X4pKMDRHFe9kOsVDe9hg" alt="Product 4">
+        <h3>Golden Aari Artistry</h3>
+        <p>A sophisticated Aari embroidery design, bringing vibrant and intricate patterns to life.</p>
+      </div>
+      <div class="product-card" data-aos="fade-up">
+        <img src="https://i.etsystatic.com/25022863/r/il/933843/5180708093/il_1588xN.5180708093_o5qm.jpg" alt="Product 5">
+        <h3>Aari Delight Stitch</h3>
+        <p>Regal Aari embroidery featuring royal motifs and intricate stitching for an aristocratic touch.</p>
+      </div>
+      <div class="product-card" data-aos="fade-up">
+        <img src="https://i.etsystatic.com/25022863/r/il/c4ad88/3141970624/il_fullxfull.3141970624_e5ct.jpg" alt="Product 6">
+        <h3>Royal Aari Creations</h3>
+        <p>A stunning display of Aari work, creating mesmerizing designs through skillful threadwork.</p>
+      </div>
+      <div class="product-card" data-aos="fade-up">
+        <img src="https://images.meesho.com/images/products/441456362/xlvyg_1200.jpg" alt="Product 8">
+        <h3>Aari Thread Wonders</h3>
+        <p>A refined collection of Aari embroidery, where elegance meets intricate craftsmanship.</p>
+      </div>
+      <div class="product-card" data-aos="fade-up">
+        <img src="https://i.etsystatic.com/25022863/r/il/346d5f/5212064045/il_1588xN.5212064045_gbuq.jpg" alt="Product 9">
+        <h3>Embroidered Aari Elegance</h3>
+        <p>Classic Aari embroidery patterns that capture the essence of traditional artistry and modern style.</p>
+      </div>
+      <div class="product-card" data-aos="fade-up">
+        <img src="https://viaanadesignerstudio.com/wp-content/uploads/2024/08/img_3079-scaled.jpeg" alt="Product 10">
+        <h3>Aari Essence Patterns</h3>
+        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <h2>Find Us :</h2>
+    <p><strong>Address:</strong><br>
+      Melachinthamani,<br>
+      Old Karur Road,<br>
+      Thiruchirappalli - 2
+    </p>
+    <p><strong>Phone:</strong> <a href="tel:+91 9585907145">+91 9585907145</a></p>
+    <p><strong>Email:</strong> <a href="mailto:AV@aariworkblouse.com">AariAuraa@aariworkblouse.com</a></p>
+  </section>
+  
+
+  <footer>
+    <p>&copy; 2025 Aari Aura | All Rights Reserved</p>
+  </footer>
+
+
+
+ <!-- Include AOS Script -->
+ <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+ <script>
+   AOS.init();
+ </script>
+
+ <!-- JavaScript for Auto Scrolling Offer Banner -->
+ <script>
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const navMenu = document.getElementById('navMenu');
+
+  hamburgerBtn.addEventListener('click', () => {
+    navMenu.classList.toggle('show');
+  });
+</script>
+
+
+</body>
+</html>
