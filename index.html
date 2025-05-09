@@ -1,559 +1,1409 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AariAura</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-  <style>
-    :root {
-      --primary-color: #ffffff;
-      --secondary-color: #4b0082;
-      --bg-color: #4b0082;
-      --text-color: #ffffff;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AARI WORKS - Exquisite Handcrafted Embroidery</title>
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile navigation toggle
+            const navToggle = document.querySelector('.nav-toggle');
+            const mainNav = document.querySelector('.main-nav');
+            
+            navToggle.addEventListener('click', function() {
+                mainNav.classList.toggle('active');
+            });
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Close mobile menu if open
+                    mainNav.classList.remove('active');
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 70, // Offset for header
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Product filtering functionality
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const productCards = document.querySelectorAll('.product-card');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Update active button
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const filter = this.textContent;
+                    
+                    // Show all products if "All" is selected
+                    if (filter === 'All') {
+                        productCards.forEach(card => {
+                            card.style.display = 'block';
+                        });
+                    } else {
+                        // Filter products based on category
+                        productCards.forEach(card => {
+                            const category = card.querySelector('.product-category').textContent;
+                            if (category.includes(filter)) {
+                                card.style.display = 'block';
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    <style>
+        /* --- Reset and Base Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+        body {
+            font-family: 'Georgia', serif;
+            color: #333;
+            background-color: #f9f5f0;
+            line-height: 1.6;
+        }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      scroll-behavior: smooth;
-    }
+        img {
+            max-width: 100%;
+        }
 
-    header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: #4b0082;
-  position: relative;
-  z-index: 1000;
-}
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
-.logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--primary-color);
-}
+        /* --- Typography --- */
+        h1, h2, h3, h4 {
+            font-weight: normal;
+            line-height: 1.3;
+        }
 
-.logo img {
-  width: 150px;  /* Adjust the width as needed */
-  height: 150px;  /* Maintain aspect ratio */
-}
+        /* --- Header --- */
+        .header {
+            background-color: #d4af37;
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
 
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-.hamburger {
-  font-size: 30px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: #fff; /* Set the hamburger icon color to white */
-  display: block;
-  z-index: 1000; /* Ensure the button is above other elements */
-}
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-nav {
-  display: flex;
-  gap: 1.5rem;
-}
+        .logo {
+            display: flex;
+            align-items: center;
+        }
 
-nav a {
-  display: flex;
-  align-items: center;
-  color: var(--primary-color);
-  text-decoration: none;
-  font-weight: 600;
-  transition: 0.3s;
-}
+        .logo-text {
+            color: #fff;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            margin-left: 10px;
+        }
 
-.nav-icon {
-  width: 20px;
-  margin-right: 8px;
-}
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
 
-/* Mobile Styles */
-@media (max-width: 768px) {
-  .hamburger {
-    display: block;
-  }
+        .main-nav ul {
+            display: flex;
+            list-style: none;
+        }
 
-  nav {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #4b0082;
-    width: 100%;
-    flex-direction: row;
-    gap: 1rem;
-    padding: 1rem 2rem;
-    display: none; /* hide nav by default */
-  }
+        .main-nav li {
+            margin-left: 30px;
+        }
 
-  nav.show {
-    display: flex;
-  }
-}
+        .main-nav a {
+            color: #fff;
+            font-size: 1rem;
+            padding: 5px 0;
+            position: relative;
+            transition: color 0.3s;
+        }
 
-    .hero-section {
-      background-image: url('path/to/your/image.jpg');
-      background-size: cover;
-      background-position: center;
-      color: var(--primary-color);
-      padding: 80px 20px;
-      text-align: center;
-      position: relative;
-    }
+        .main-nav a:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #d4af37;
+            transition: width 0.3s;
+        }
 
-    .hero-content h1 {
-      font-size: 3rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      animation: fadeIn 2s ease-out;
-    }
+        .main-nav a:hover {
+            color: #d4af37;
+        }
 
-    .hero-content p {
-      font-size: 1.2rem;
-      line-height: 1.6;
-      max-width: 800px;
-      margin: 0 auto;
-      animation: fadeIn 2s 0.5s ease-out;
-    }
+        .main-nav a:hover:before {
+            width: 100%;
+        }
 
-    @keyframes fadeIn {
-      0% { opacity: 0; }
-      100% { opacity: 1; }
-    }
+        /* --- Hero Section --- */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/api/placeholder/1200/600') center/cover no-repeat;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+            padding-top: 60px;
+        }
 
-    #products {
-      padding: 4rem 20px;
-      text-align: center;
-    }
+        .hero-content {
+            max-width: 800px;
+        }
 
-    #products h2 {
-      font-size: 2.5rem;
-      margin-bottom: 2rem;
-      color: var(--primary-color);
-      animation: fadeInUp 1s ease-out;
-    }
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
 
-    .products-container {
-      display: flex;
-      overflow-x: auto;
-      gap: 20px;
-      padding: 1rem 0;
-    }
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
-    .product-card {
-      min-width: 250px;
-      background: transparent;
-      border: 1px solid #ffffff33;
-      border-radius: 8px;
-      padding: 1.5rem;
-      text-align: center;
-      color: white;
-      box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
-      transition: 0.3s;
-      animation: fadeInUp 1s ease-in-out;
-    }
+        .btn {
+            display: inline-block;
+            background-color: #d4af37;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
 
-    .product-card img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
+        .btn:hover {
+            background-color: #b59030;
+        }
 
-    .product-card:hover {
-      transform: translateY(-10px);
-    }
+        /* --- About Section --- */
+        .section {
+            padding: 80px 0;
+        }
 
-    @keyframes fadeInUp {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: #8b4513;
+            position: relative;
+        }
 
-    #contact {
-      padding: 2rem 20px;
-      text-align: center;
-    }
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: #d4af37;
+            margin: 15px auto 0;
+        }
 
-    #contact h2 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      color: var(--primary-color);
-    }
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
 
-    #contact a {
-      color: var(--primary-color);
-      text-decoration: underline;
-    }
+        .about-image {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
 
-    footer {
-      background-color: var(--secondary-color);
-      color: white;
-      padding: 1.5rem;
-      text-align: center;
-    }
+        .about-text {
+            flex: 1;
+        }
 
-    footer a {
-      color: white;
-      text-decoration: none;
-    }
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #8b4513;
+        }
 
-    footer a:hover {
-      color: var(--primary-color);
-    }
+        .about-text p {
+            margin-bottom: 20px;
+        }
 
-    @media (max-width: 600px) {
-      .logo {
-        font-size: 1.2rem;
-      }
-      nav a {
-        margin: 0 0.5rem;
-        font-size: 0.9rem;
-      }
+        /* --- Features Section --- */
+        .features {
+            background-color: #f0e6d8;
+        }
 
-      
-.carousel-container {
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-}
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
 
-.carousel-track {
-  display: flex;
-  animation: slide 12s infinite linear;
-  gap: 1rem;
-}
+        .feature-card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
 
-.carousel-track img {
-  min-width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 12px;
-}
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
 
-@keyframes slide {
-  0%   { transform: translateX(0%); }
-  33%  { transform: translateX(-100%); }
-  66%  { transform: translateX(-200%); }
-  100% { transform: translateX(0%); }
-}
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #d4af37;
+            margin-bottom: 20px;
+        }
 
-  /* Offer Banner CSS */
- /* Offer Banner CSS */
-.offer-banner {
-  background-color: #fff;
-  overflow: hidden;
-  padding: 10px 0;
-  margin: 2rem auto;
-  width: 100%;
-  height: 100px;
-  display: flex;
-  align-items: center;
-}
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #8b4513;
+        }
 
-.offer-carousel {
-  display: flex;
-  gap: 20px;
-  overflow: hidden;
-  width: 100%;
-  scroll-behavior: smooth;
-}
+        /* --- Products Section --- */
+        .products-filter {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
 
-.offer-carousel img {
-  height: 100px;
-  width: 200px; /* Adjusted size */
-  object-fit: cover;
-  border-radius: 8px;
-  flex-shrink: 0;
-}
+        .filter-btn {
+            background: none;
+            border: none;
+            padding: 8px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #8b4513;
+            position: relative;
+        }
 
-.offer-banner {
-  background-color: #fff;
-  overflow: hidden;
-  padding: 10px 0;
-  margin: 2rem auto;
-  width: 100%;
-  height: 100px; /* Keeps the height fixed */
-}
+        .filter-btn:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #d4af37;
+            transition: width 0.3s;
+        }
 
-.offer-carousel {
-  display: flex;
-  gap: 20px;
-  overflow: hidden;
-  width: 100%;
-  scroll-behavior: smooth;
-}
+        .filter-btn.active, .filter-btn:hover {
+            color: #d4af37;
+        }
 
-.offer-carousel img {
-  height: 100px;  /* Fixed height for the banner */
-  width: 200px;  /* Adjusted width for better visibility */
-  object-fit: cover; /* Ensure image fits well within the container */
-  border-radius: 8px;
-  flex-shrink: 0;
-}
+        .filter-btn.active:after, .filter-btn:hover:after {
+            width: 100%;
+        }
 
-@media screen and (max-width: 768px) {
-  .offer-carousel img {
-    width: 150px;  /* Smaller width on mobile for better scaling */
-    height: 80px;  /* Adjust height on smaller screens */
-  }
-}
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
 
+        .product-card {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
 
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
 
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #d4af37;
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 5px 10px;
+            border-radius: 20px;
+            z-index: 10;
+        }
 
+        .product-image {
+            height: 250px;
+            background-color: #f0e6d8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
 
-    }
-  </style>
+        .product-content {
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #8b4513;
+        }
+
+        .product-category {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-weight: bold;
+            color: #8b4513;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .product-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .product-card:hover .product-overlay {
+            opacity: 1;
+        }
+
+        .overlay-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .overlay-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .overlay-btn:hover {
+            background-color: #d4af37;
+            color: #fff;
+        }
+
+        /* --- Testimonials Section --- */
+        .testimonials {
+            background-color: #f0e6d8;
+            text-align: center;
+        }
+
+        .testimonial-slider {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            padding: 30px 0;
+        }
+
+        .testimonial {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .testimonial-text:before, .testimonial-text:after {
+            content: '"';
+            font-size: 2rem;
+            color: #d4af37;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: #8b4513;
+        }
+
+        .testimonial-role {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        /* --- Newsletter Section --- */
+        .newsletter {
+            text-align: center;
+        }
+
+        .newsletter-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+        }
+
+        .newsletter-input {
+            flex-grow: 1;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+        }
+
+        .newsletter-btn {
+            background-color: #8b4513;
+            color: #fff;
+            border: none;
+            padding: 0 30px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .newsletter-btn:hover {
+            background-color: #6a340f;
+        }
+
+        /* --- Footer --- */
+        .footer {
+            background-color: #412008;
+            color: #fff;
+            padding: 50px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-widget h4 {
+            color: #d4af37;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #d4af37;
+        }
+
+        .footer-contact p {
+            margin-bottom: 10px;
+            color: #ccc;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: #fff;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: #8b4513;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+
+        .social-links a:hover {
+            background-color: #d4af37;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 992px) {
+            .about-content {
+                flex-direction: column;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+
+            .main-nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: #8b4513;
+                padding: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+
+            .main-nav.active {
+                max-height: 300px;
+            }
+
+            .main-nav ul {
+                flex-direction: column;
+                padding: 0;
+            }
+
+            .main-nav li {
+                margin: 0;
+                text-align: center;
+            }
+
+            .main-nav a {
+                display: block;
+                padding: 15px;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .products-filter {
+                flex-wrap: wrap;
+            }
+
+            .filter-btn {
+                margin-bottom: 10px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .newsletter-input {
+                border-radius: 5px;
+                margin-bottom: 10px;
+            }
+
+            .newsletter-btn {
+                border-radius: 5px;
+                padding: 15px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="logo">
-    </div>
-      
-    <button class="hamburger" id="hamburgerBtn">
-      &#9776;
-    </button>
-  
-    <nav id="navMenu">
-      <a href="#hero">
-        <img src="images/icons8-home-100.png" alt="Home" class="nav-icon"> Home
-      </a>
-      <a href="#products">
-        <img src="images/icons8-shopping-cart-100.png" alt="Products" class="nav-icon"> Products
-      </a>
-      <a href="#contact">
-        <img src="images/icons8-contacts-100.png" alt="Contact" class="nav-icon"> Contact
-      </a>
-    </nav>
-  </header>
-  
-  
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="#" class="logo-text">Aari Auraa</a>
+                </div>
+                <button class="nav-toggle">☰</button>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#products">Products</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
 
-  <!-- Hero Section -->
-  <section id="hero" class="hero-section">
-    <div class="hero-content">
-      <h1>Welcome to The World of Aari Aura
-      </h1>
-      <img src="images/Gold Luxury Initial Logo.png" alt="Aari aaura">
-      <p>Experience the elegance of handcrafted Aari work, a rich tradition passed down through generations. Our blouses are meticulously designed to offer a perfect blend of cultural artistry and modern fashion.</p>
-    </div>
-  </section>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Aari Auraa</h1>
+                <p>Exquisite handcrafted embroidery bringing traditional artistry to contemporary fashion</p>
+                <a href="#products" class="btn">Explore Collection</a>
+            </div>
+        </div>
+    </section>
 
+    <!-- About Section -->
+    <section class="section" id="about">
+        <div class="container">
+            <h2 class="section-title">Our Heritage</h2>
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="images/Gold Luxury Initial Logo.png" alt="Aari Embroidery Artisan at Work">
+                </div>
+                <div class="about-text">
+                    <h3>Traditional Craftsmanship</h3>
+                    <p>AARI WORKS preserves the centuries-old tradition of Aari embroidery, an exquisite art form that originated in the royal courts of India. Our skilled artisans use a specialized hook-like needle to create intricate designs with precision and care.</p>
+                    <p>Each piece is meticulously handcrafted, taking days and sometimes weeks to complete, ensuring a unique treasure that tells a story of cultural heritage and artistic excellence.</p>
+                    <!-- <a href="#" class="btn">Learn More</a> -->
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Features Section -->
+    <section class="section features">
+        <div class="container">
+            <h2 class="section-title">Why Choose Us</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">★</div>
+                    <h3>Superior Quality</h3>
+                    <p>Crafted with premium materials ensuring longevity and exceptional performance. Each piece passes through rigorous quality checks before reaching you.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Innovative Design</h3>
+                    <p>Cutting-edge technology with intuitive features for the best user experience. We blend traditional techniques with contemporary aesthetics.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">♻️</div>
+                    <h3>Eco-Friendly</h3>
+                    <p>Sustainable production processes and environmentally conscious materials. We're committed to reducing our carbon footprint.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- Products Section -->
-  <section id="products">
-    <h2>Our Products</h2>
-    <h1>We’re new and excited to work with you  — prices are open for discussion!</h1>
+    <!-- Products Section -->
+    <section class="section" id="products">
+        <div class="container">
+            <h2 class="section-title">Our Collection</h2>
+            <div class="products-filter">
+                <button class="filter-btn active">All</button>
+                <button class="filter-btn">Heritage</button>
+                <button class="filter-btn">Contemporary</button>
+                <button class="filter-btn">Bridal</button>
+                <button class="filter-btn">Home Decor</button>
+            </div>
+            <div class="products-grid">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-badge">New</div>
+                    <div class="product-image">
+                        <img src="https://i.etsystatic.com/25022863/r/il/933843/5180708093/il_1588xN.5180708093_o5qm.jpg" alt="Aari Embroidered Saree">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Royal Peacock Saree</h3>
+                        <div class="product-category">Heritage Collection</div>
+                        <div class="product-price">₹15,999</div>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-badge">Bestseller</div>
+                    <div class="product-image">
+                        <img src="https://i.etsystatic.com/25022863/r/il/c4ad88/3141970624/il_fullxfull.3141970624_e5ct.jpg" alt="Aari Work Dupatta">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Floral Essence Dupatta</h3>
+                        <div class="product-category">Contemporary</div>
+                        <div class="product-price">₹4,299</div>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://i.etsystatic.com/25022863/r/il/1b8879/5180670027/il_1588xN.5180670027_odd5.jpg" alt="Aari Embroidered Blouse">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Ornate Blouse</h3>
+                        <div class="product-category">Bridal</div>
+                        <div class="product-price">₹8,799</div>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://i.etsystatic.com/25022863/r/il/933843/5180708093/il_1588xN.5180708093_o5qm.jpg" alt="Aari Cushion Cover">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Lotus Pond Cushion Cover</h3>
+                        <div class="product-category">Home Decor</div>
+                        <div class="product-price">₹1,999</div>
+                    </div>
+                </div>
+                
+                <!-- Product 5 -->
+                <div class="product-card">
+                    <div class="product-badge">Sale</div>
+                    <div class="product-image">
+                        <img src="https://images.meesho.com/images/products/441456362/xlvyg_1200.jpg" alt="Aari Table Runner">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Heritage Table Runner</h3>
+                        <div class="product-category">Home Decor</div>
+                        <div class="product-price">₹3,499</div>
+                    </div>
+                </div>
+                
+                <!-- Product 6 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://i.etsystatic.com/25022863/r/il/346d5f/5212064045/il_1588xN.5212064045_gbuq.jpg" alt="Aari Embroidered Lehenga">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Regal Bridal Lehenga</h3>
+                        <div class="product-category">Bridal</div>
+                        <div class="product-price">₹45,999</div>
+                    </div>
+                </div>
+                
+                <!-- Product 7 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://viaanadesignerstudio.com/wp-content/uploads/2024/08/img_3079-scaled.jpeg" alt="Aari Work Potli Bag">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Embellished Potli Bag</h3>
+                        <div class="product-category">Contemporary</div>
+                        <div class="product-price">₹2,199</div>
+                    </div>
+                </div>
+                
+                <!-- Product 8 -->
+                <div class="product-card">
+                    <div class="product-badge">Limited</div>
+                    <div class="product-image">
+                        <img src="https://i.pinimg.com/736x/68/d6/eb/68d6eb6bdc52febe92e733211c5ea00c.jpg" alt="Aari Work Wall Hanging">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Peacock Dream Wall Art</h3>
+                        <div class="product-category">Home Decor</div>
+                        <div class="product-price">₹6,999</div>
+                    </div>
+                </div>
+                
+                <!-- Product 9 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://i.etsystatic.com/25022863/r/il/933843/5180708093/il_1588xN.5180708093_o5qm.jpg" alt="Aari Embroidered Stole">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Pashmina Aari Stole</h3>
+                        <div class="product-category">Heritage Collection</div>
+                        <div class="product-price">₹3,299</div>
+                    </div>
+                </div>
+                
+                <!-- Product 10 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://i.etsystatic.com/25022863/r/il/c4ad88/3141970624/il_fullxfull.3141970624_e5ct.jpg" alt="Aari Work Kurta">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Botanical Kurta</h3>
+                        <div class="product-category">Contemporary</div>
+                        <div class="product-price">₹5,499</div>
+                    </div>
+                </div>
+                
+                <!-- Product 11 -->
+                <div class="product-card">
+                    <div class="product-badge">Handmade</div>
+                    <div class="product-image">
+                        <img src="https://images.meesho.com/images/products/441456362/xlvyg_1200.jpg" alt="Aari Work Jewelry Box">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Antique Jewelry Box</h3>
+                        <div class="product-category">Home Decor</div>
+                        <div class="product-price">₹4,799</div>
+                    </div>
+                </div>
+                
+                <!-- Product 12 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://i.etsystatic.com/25022863/r/il/346d5f/5212064045/il_1588xN.5212064045_gbuq.jpg" alt="Aari Work Saree">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Ruby Red Bridal Saree</h3>
+                        <div class="product-category">Bridal</div>
+                        <div class="product-price">₹22,999</div>
+                    </div>
+                </div>
+                
+                <!-- Product 13 -->
+                <div class="product-card">
+                    <div class="product-badge">Custom</div>
+                    <div class="product-image">
+                        <img src="https://i.pinimg.com/736x/68/d6/eb/68d6eb6bdc52febe92e733211c5ea00c.jpg" alt="Aari Work Jacket">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Modern Crop Jacket</h3>
+                        <div class="product-category">Contemporary</div>
+                        <div class="product-price">₹7,499</div>
+                    </div>
+                </div>
+                
+                <!-- Product 14 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://i.pinimg.com/736x/f7/55/1b/f7551b24591ff81cb911e407d253d1fb.jpg" alt="Aari Embroidered Clutch">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Evening Glam Clutch</h3>
+                        <div class="product-category">Contemporary</div>
+                        <div class="product-price">₹3,199</div>
+                    </div>
+                </div>
+                
+                <!-- Product 15 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOU9hnGZvurL9JBp1SLyA-RzNDL_rNMjSQEbZP0OLM_OfUOuz-jbLdAM18YhSbS4p6uvk&usqp=CAU" alt="Aari Embroidered Lampshade">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Bohemian Lampshade</h3>
+                        <div class="product-category">Home Decor</div>
+                        <div class="product-price">₹2,899</div>
+                    </div>
+                </div>
+                
+                <!-- Product 16 -->
+                <div class="product-card">
+                    <div class="product-badge">Bestseller</div>
+                    <div class="product-image">
+                        <img src="https://i.pinimg.com/564x/38/75/df/3875dfd956aee8cba6bd1a6499f215ec.jpg" alt="Aari Embroidered Anarkali">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Royal Anarkali Suit</h3>
+                        <div class="product-category">Heritage Collection</div>
+                        <div class="product-price">₹18,499</div>
+                    </div>
+                </div>
+                
+                <!-- Product 17 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://m.media-amazon.com/images/I/61NoY0z0SZL._AC_UF1000,1000_QL80_.jpg" alt="Aari Work Table Mat">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Dining Table Mat Set</h3>
+                        <div class="product-category">Home Decor</div>
+                        <div class="product-price">₹4,299</div>
+                    </div>
+                </div>
+                
+                <!-- Product 18 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://aadambharaa.com/cdn/shop/products/IMG_6684conv.jpg?crop=center&height=3931&v=1658397669&width=3024" alt="Aari Work Shawl">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Winter Elegance Shawl</h3>
+                        <div class="product-category">Heritage Collection</div>
+                        <div class="product-price">₹7,899</div>
+                    </div>
+                </div>
+                
+                <!-- Product 19 -->
+                <div class="product-card">
+                    <div class="product-badge">New</div>
+                    <div class="product-image">
+                        <img src="https://images.meesho.com/images/products/357383766/dkavb_512.webp" alt="Aari Embroidered Gown">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Fusion Evening Gown</h3>
+                        <div class="product-category">Contemporary</div>
+                        <div class="product-price">₹12,999</div>
+                    </div>
+                </div>
+                
+                <!-- Product 20 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.meesho.com/images/products/365500257/blikm_512.webp" alt="Aari Work Photo Frame">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Heirloom Photo Frame</h3>
+                        <div class="product-category">Home Decor</div>
+                        <div class="product-price">₹2,599</div>
+                    </div>
+                </div>
+                
+                <!-- Product 21 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://aadambharaa.com/cdn/shop/products/Untitleddesign_21_9f1ca579-f587-49d4-b9f9-5fbbb9d91e87.png?crop=center&height=1299&v=1590514409&width=1000" alt="Aari Work Men's Kurta">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Royal Silk Kurta</h3>
+                        <div class="product-category">Heritage Collection</div>
+                        <div class="product-price">₹8,499</div>
+                    </div>
+                </div>
+                
+                <!-- Product 22 -->
+                <div class="product-card">
+                    <div class="product-badge">Handmade</div>
+                    <div class="product-image">
+                        <img src="https://images.meesho.com/images/products/318543498/31gg9_512.webp" alt="Aari Work Wedding Dress">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Bridal Dream Ensemble</h3>
+                        <div class="product-category">Bridal</div>
+                        <div class="product-price">₹65,999</div>
+                    </div>
+                </div>
+                
+                <!-- Product 23 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://s3.ap-south-1.amazonaws.com/business.strackit.com/products/feature/1731587580474.jpg" alt="Aari Work Bedcover">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Luxury Bedcover Set</h3>
+                        <div class="product-category">Home Decor</div>
+                        <div class="product-price">₹12,499</div>
+                    </div>
+                </div>
+                
+                <!-- Product 24 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.meesho.com/images/products/326467364/rogl4_512.webp" alt="Aari Work Hair Accessory">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Bridal Hair Pins</h3>
+                        <div class="product-category">Bridal</div>
+                        <div class="product-price">₹1,899</div>
+                    </div>
+                </div>
+                
+                <!-- Product 25 -->
+                <div class="product-card">
+                    <div class="product-badge">Limited</div>
+                    <div class="product-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFTwmHqbO-IsDqVTNsjtFZ-aK4_zmFxHafYzsVOJ6z0OMC9o8_rRVuRZHKmFqFJvimCps&usqp=CAU" alt="Aari Work Palazzo Pants">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Designer Palazzo Set</h3>
+                        <div class="product-category">Contemporary</div>
+                        <div class="product-price">₹6,299</div>
+                    </div>
+                </div>
+                
+                <!-- Product 26 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.meesho.com/images/products/326467364/rogl4_512.webp" alt="Aari Work Notebook Cover">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Embroidered Journal</h3>
+                        <div class="product-category">Home Decor</div>
+                        <div class="product-price">₹1,499</div>
+                    </div>
+                </div>
+                
+                <!-- Product 27 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://i.pinimg.com/236x/dc/2c/92/dc2c92d913d6d576465c84ae69e8a3c2.jpg" alt="Aari Work Wedding Veil">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Ethereal Bridal Veil</h3>
+                        <div class="product-category">Bridal</div>
+                        <div class="product-price">₹9,999</div>
+                    </div>
+                </div>
+                
+                <!-- Product 28 -->
+                <div class="product-card">
+                    <div class="product-badge">Luxury</div>
+                    <div class="product-image">
+                        <img src="https://cdn.shopify.com/s/files/1/0597/7774/5080/files/aari_6_600x600.jpg" alt="Aari Work Mirror">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Ornate Wall Mirror</h3>
+                        <div class="product-category">Home Decor</div>
+                        <div class="product-price">₹11,299</div>
+                    </div>
+                </div>
+                
+                <!-- Product 29 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://i.pinimg.com/736x/6b/cb/00/6bcb009a7a480c5b73c7b60811038d93.jpg" alt="Aari Work Cape">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Designer Cape Shrug</h3>
+                        <div class="product-category">Contemporary</div>
+                        <div class="product-price">₹4,999</div>
+                    </div>
+                </div>
+                
+                <!-- Product 30 -->
+                <div class="product-card">
+                    <div class="product-badge">Artisan</div>
+                    <div class="product-image">
+                        <img src="https://i.etsystatic.com/47445092/r/il/fbec88/5804302858/il_fullxfull.5804302858_4vfi.jpg" alt="Aari Work Gift Box">
+                        <div class="product-overlay">
+                            <div class="overlay-btns">
+                                <a href="#" class="overlay-btn">🛒</a>
+                                <a href="#" class="overlay-btn">❤️</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Heritage Gift Box</h3>
+                        <div class="product-category">Home Decor</div>
+                        <div class="product-price">₹3,499</div>
+                    </div>
+                </div>
+            </div>
+            
+          
+        </div>
+    </section>
 
-    <div class="products-container">
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://i.pinimg.com/236x/84/70/82/847082bc7e98b35c03e70f68c7055f83.jpg" alt="Product 1">
-        <h3>Aari Blossom Embroidery</h3>
-        <p>A delicate design featuring blooming floral patterns crafted with intricate Aari embroidery.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTeePdjxBy6C5o4OzQMRVcEmi_JFmaYGnlIbg0s2zEWbA-fwTZj-cWv4FrW3i9JnFBAGXn0TrB9T30k7t_0WefnbeAMc6lXpJSqE5ZZRiqBn2l671B1Avkm_Q" alt="Product 2">
-        <h3>Silk Aari Threads</h3>
-        <p>Luxurious silk threads woven into beautiful Aari embroidery, combining elegance and tradition.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://i.etsystatic.com/25022863/r/il/1b8879/5180670027/il_1588xN.5180670027_odd5.jpg" alt="Product 3">
-        <h3>Maggnum Work blouses</h3>
-        <p>Exquisite golden threadwork showcasing the fine art of Aari embroidery in every stitch.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQnFsDkOInxEZ1zHGasmI3jJcYgq41350ihN9sJEoadvBUguX7-_bpNC4aJFKdKiPk5yChhac1g05RBj6-HW8o5P8gjrhNivxiaI0X4pKMDRHFe9kOsVDe9hg" alt="Product 4">
-        <h3>Golden Aari Artistry</h3>
-        <p>A sophisticated Aari embroidery design, bringing vibrant and intricate patterns to life.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://i.etsystatic.com/25022863/r/il/933843/5180708093/il_1588xN.5180708093_o5qm.jpg" alt="Product 5">
-        <h3>Aari Delight Stitch</h3>
-        <p>Regal Aari embroidery featuring royal motifs and intricate stitching for an aristocratic touch.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://i.etsystatic.com/25022863/r/il/c4ad88/3141970624/il_fullxfull.3141970624_e5ct.jpg" alt="Product 6">
-        <h3>Royal Aari Creations</h3>
-        <p>A stunning display of Aari work, creating mesmerizing designs through skillful threadwork.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://images.meesho.com/images/products/441456362/xlvyg_1200.jpg" alt="Product 8">
-        <h3>Aari Thread Wonders</h3>
-        <p>A refined collection of Aari embroidery, where elegance meets intricate craftsmanship.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://i.etsystatic.com/25022863/r/il/346d5f/5212064045/il_1588xN.5212064045_gbuq.jpg" alt="Product 9">
-        <h3>Embroidered Aari Elegance</h3>
-        <p>Classic Aari embroidery patterns that capture the essence of traditional artistry and modern style.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://viaanadesignerstudio.com/wp-content/uploads/2024/08/img_3079-scaled.jpeg" alt="Product 10">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://i.pinimg.com/736x/68/d6/eb/68d6eb6bdc52febe92e733211c5ea00c.jpg" alt="Product 11">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://i.pinimg.com/736x/f7/55/1b/f7551b24591ff81cb911e407d253d1fb.jpg" alt="Product 12">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOU9hnGZvurL9JBp1SLyA-RzNDL_rNMjSQEbZP0OLM_OfUOuz-jbLdAM18YhSbS4p6uvk&usqp=CAU" alt="Product 13">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://i.pinimg.com/564x/38/75/df/3875dfd956aee8cba6bd1a6499f215ec.jpg" alt="Product 14">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://m.media-amazon.com/images/I/61NoY0z0SZL._AC_UF1000,1000_QL80_.jpg" alt="Product 15">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://aadambharaa.com/cdn/shop/products/IMG_6684conv.jpg?crop=center&height=3931&v=1658397669&width=3024" alt="Product 16">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://images.meesho.com/images/products/357383766/dkavb_512.webp" alt="Product 17">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://aadambharaa.com/cdn/shop/products/Untitleddesign_21_9f1ca579-f587-49d4-b9f9-5fbbb9d91e87.png?crop=center&height=1299&v=1590514409&width=1000" alt="Product 18">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://images.meesho.com/images/products/365500257/blikm_512.webp" alt="Product 19">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://images.meesho.com/images/products/318543498/31gg9_512.webp" alt="Product 20">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://s3.ap-south-1.amazonaws.com/business.strackit.com/products/feature/1731587580474.jpg" alt="Product 21">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="data:image/jpeg;base64,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" alt="Product 10">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFTwmHqbO-IsDqVTNsjtFZ-aK4_zmFxHafYzsVOJ6z0OMC9o8_rRVuRZHKmFqFJvimCps&usqp=CAU" alt="Product 23">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://images.meesho.com/images/products/326467364/rogl4_512.webp" alt="Product 24">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://i.pinimg.com/236x/dc/2c/92/dc2c92d913d6d576465c84ae69e8a3c2.jpg" alt="Product 25">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://cdn.shopify.com/s/files/1/0597/7774/5080/files/aari_6_600x600.jpg" alt="Product 26">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://i.pinimg.com/736x/6b/cb/00/6bcb009a7a480c5b73c7b60811038d93.jpg" alt="Product 27">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCOiYmFpC7Tzk1KAisrDHLHtkdjNdru9hecJEUIj9EBK3MVvLGYCojdtWMfqFlbFmKypA&usqp=CAU" alt="Product 28">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://i.etsystatic.com/47445092/r/il/fbec88/5804302858/il_fullxfull.5804302858_4vfi.jpg" alt="Product 29">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://stylesatlife.com/wp-content/uploads/2024/07/Maggam-mirror-work-blouse-designs.jpg" alt="Product 30">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      <div class="product-card" data-aos="fade-up">
-        <img src="https://m.media-amazon.com/images/I/51cgiEnsaML._AC_UY1100_.jpg" alt="Product 31">
-        <h3>Aari Essence Patterns</h3>
-        <p>Meticulously crafted Aari embroidery showcasing complex and captivating thread patterns.</p>
-      </div>
-      
-    </div>
+    <!-- Testimonials Section -->
+    <section class="section testimonials" id="testimonials">
+        <div class="container">
+            <h2 class="section-title">What Our Customers Say</h2>
+            <div class="testimonial-slider">
+                <div class="testimonial">
+                    <p class="testimonial-text">The intricate details on my bridal lehenga were beyond my expectations. AARI WORKS has truly mastered the art of traditional embroidery with a modern touch.</p>
+                    <h4 class="testimonial-author">Priya Sharma</h4>
+                    <p class="testimonial-role">Bride, Delhi</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  </section>
+    <!-- Newsletter Section -->
+    <section class="section newsletter">
+        <div class="container">
+            <h2 class="section-title">Stay Updated</h2>
+            <p style="text-align: center; max-width: 600px; margin: 0 auto 30px;">Subscribe to our newsletter to receive updates on new collections, special offers, and traditional embroidery insights.</p>
+            <form class="newsletter-form">
+                <input type="email" class="newsletter-input" placeholder="Your Email Address" required>
+                <button type="submit" class="newsletter-btn">Subscribe</button>
+            </form>
+        </div>
+    </section>
 
-
-  <!-- Contact Section -->
-  <section id="contact">
-    <h2>Find Us :</h2>
-    <p><strong>Address:</strong><br>
-      Melachinthamani,<br>
-      Old Karur Road,<br>
-      Thiruchirappalli - 2
-    </p>
-    <p><strong>Phone:</strong> <a href="tel:+91 9585907145">+91 9585907145</a></p>
-    <p><strong>Email:</strong> <a href="mailto:AV@aariworkblouse.com">AariAuraa@aariworkblouse.com</a></p>
-  </section>
-  
-
-  <footer>
-    <p>&copy; 2025 Aari Aura | All Rights Reserved</p>
-  </footer>
-
-
-
- <!-- Include AOS Script -->
- <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
- <script>
-   AOS.init();
- </script>
-
- <!-- JavaScript for Auto Scrolling Offer Banner -->
- <script>
-  const hamburgerBtn = document.getElementById('hamburgerBtn');
-  const navMenu = document.getElementById('navMenu');
-
-  hamburgerBtn.addEventListener('click', () => {
-    navMenu.classList.toggle('show');
-  });
-</script>
-
-
-</body>
-</html>
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-widget">
+                    <h4>About AARI WORKS</h4>
+                    <p>We preserve traditional Aari embroidery art while innovating for contemporary designs, empowering artisans and creating sustainable livelihoods.</p>
+                    <div class="social-links">
+                        <a href="#">📱</a>
+                        <a href="#">📘</a>
+                        <a href="#">📸</a>
+                        <a href="#">📌</a>
+                    </div>
+                </div>
+                <div class="footer-widget">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#products">Products</a></li>
+                        <li><a href="#">Gallery</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-widget">
+                    <h4>Customer Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Return Policy</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-widget footer-contact">
+                    <h4>Contact Information</h4>
+                    <p>123 Craft Avenue, Textile District</p>
+                    <p>New Delhi, India 110001</p>
+                    <p>Email: info@aariworks.com</p>
+                    <p>Phone: +91 98765 43210</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 AARI WORKS. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
